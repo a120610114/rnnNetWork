@@ -77,7 +77,7 @@ class Model():
         with tf.variable_scope('softmax'):
             ##################
             # Your Code here
-            W = tf.get_variable('W', [self.dim_embedding., self.num_words])
+            W = tf.get_variable('W', [self.dim_embedding, self.num_words])
             b = tf.get_variable('b', [self.num_words], initializer=tf.constant_initializer(0.0))
 
         logits = tf.reshape(
