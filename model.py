@@ -72,7 +72,7 @@ class Model():
         seq_output = tf.concat(outputs_tensor, 1)
 
         # flatten it
-        seq_output_final = tf.reshape(seq_output, [-1, self.dim_embedding])
+        self.seq_output_final = tf.reshape(seq_output, [-1, self.dim_embedding])
 
         with tf.variable_scope('softmax'):
             ##################
