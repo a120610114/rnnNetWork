@@ -62,17 +62,26 @@ class Model():
             # Your Code here
             #定义rnn
             
-            cell = tf.nn.rnn_cell.BasicLSTMCell(self.dim_embedding)
-            init_state = cell.zero_state(tf.shape(self.X)[0],dtype=tf.float32)
+#             cell = tf.nn.rnn_cell.BasicLSTMCell(self.dim_embedding, forget_bias=1, state_is_tuple=True)
+#             init_state = cell.zero_state(tf.shape(self.X)[0],dtype=tf.float32)
             
-            outputs_tensor, final_state = tf.nn.dynamic_rnn(cell, data, initial_state=init_state)
+#             outputs_tensor, final_state = tf.nn.dynamic_rnn(cell, data, initial_state=init_state)
+            lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(self.dim_embedding, forget_bias=1, state_is_tuple=True)
+            lstm_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_cell, output_keep_prob=self.keep_prob)
+
+            cell = tf.nn.rnn_cell.MultiRNNCell([lstm_cell] * self.rnn_layers,state_is_tuple=True)
+
+            self.state_tensor = cell.zero_state(self.batch_size, tf.float32)
+            state = self.state_tensor
+            outputs_tensor, final_state = tf.nn.dynamic_rnn(cell, data, initial_state=state)
+            self.outputs_state_tensor = final_state
             ##################
 
         # concate every time step
         seq_output = tf.concat(outputs_tensor, 1)
 
         # flatten it
-        self.seq_output_final = tf.reshape(seq_output, [-1, self.dim_embedding])
+        seq_output_final = tf.reshape(seq_output, [-1, self.dim_embedding])
 
         with tf.variable_scope('softmax'):
             ##################
@@ -81,7 +90,7 @@ class Model():
             b = tf.get_variable('b', [self.num_words], initializer=tf.constant_initializer(0.0))
 
         logits = tf.reshape(
-            tf.matmul(tf.reshape(outputs_tensor, [-1, self.dim_embedding]), W) + b,
+            tf.matmul(seq_output_final, W) + b,
             [self.batch_size, self.num_steps, self.num_words])
             ##################
 
