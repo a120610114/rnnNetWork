@@ -30,7 +30,7 @@ def index_data(sentences, dictionary):
 def get_train_data(vocabulary, batch_size, num_steps):
     ##################
     # Your Code here
-    raw_x, raw_y = vocabulary,vocabulary[1:]
+    raw_x, raw_y = vocabulary[:-1],vocabulary[1:]
     data_length = len(raw_x)
 
     # partition raw data into batches and stack them vertically in a data matrix
