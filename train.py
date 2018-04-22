@@ -31,7 +31,7 @@ with open(FLAGS.reverse_dictionary, encoding='utf-8') as inf:
 
 
 model = Model(learning_rate=FLAGS.learning_rate, batch_size=FLAGS.batch_size, num_steps=FLAGS.num_steps)
-model.build()
+model.build(embedding_file='embedding.npy')
 
 
 with tf.Session() as sess:
@@ -57,21 +57,6 @@ with tf.Session() as sess:
 
             ##################
             # Your Code here
-#             for step, (X, Y) in enumerate(dl):
-                
-#                 tr_losses, training_loss_, training_state, _ = \
-#                     sess.run([losses,
-#                               total_loss,
-#                               final_state,
-#                               train_step],
-#                                   feed_dict={x:X, y:Y, init_state:training_state})
-#                 training_loss += training_loss_
-#                 if step % 100 == 0 and step > 0:
-#                     if verbose:
-#                         print("Average loss at step", step,
-#                               "for last 250 steps:", training_loss/100)
-#                     training_losses.append(training_loss/100)
-#                     training_loss = 0
             feed_dict={model.X: dl[0], model.Y: dl[1], model.keep_prob: 0.9}
             ##################
 
