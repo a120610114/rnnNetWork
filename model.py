@@ -32,7 +32,7 @@ class Model():
         self.rnn_layers = rnn_layers
         self.learning_rate = learning_rate
 
-    def build(self, embedding_file='/data/HiBoyljw/rnnnetdata/embedding.npy'):
+    def build(self, embedding_file=None):
         # global step
         self.global_step = tf.Variable(
             0, trainable=False, name='self.global_step', dtype=tf.int64)
