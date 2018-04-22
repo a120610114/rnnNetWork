@@ -89,7 +89,7 @@ class Model():
 
         self.predictions = tf.nn.softmax(logits, name='predictions')
 
-        y = tf.placeholder(tf.int32, [batch_size, num_steps], name='labels_placeholder')
+        y = tf.placeholder(tf.int32, [self.batch_size, self.num_steps], name='labels_placeholder')
         
         loss = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)
         
