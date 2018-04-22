@@ -92,7 +92,7 @@ class Model():
         y = tf.placeholder(tf.int32, [self.batch_size, self.num_steps], name='labels_placeholder')
         
         loss = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,logits=logits)
-        
+        mean, var = tf.nn.moments(logits, -1)
         self.loss = tf.reduce_mean(loss)
         tf.summary.scalar('logits_loss', self.loss)
 
