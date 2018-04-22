@@ -31,7 +31,7 @@ with open(FLAGS.reverse_dictionary, encoding='utf-8') as inf:
 
 
 model = Model(learning_rate=FLAGS.learning_rate, batch_size=FLAGS.batch_size, num_steps=FLAGS.num_steps)
-model.build(embedding_file='embedding.npy')
+model.build(embedding_file='/data/HiBoyljw/rnnnetdata/embedding.npy')
 
 
 with tf.Session() as sess:
@@ -50,7 +50,7 @@ with tf.Session() as sess:
     except Exception:
         logging.debug('no check point found....')
 
-    for x in range(1):
+    for x in range(100):
         logging.debug('epoch [{0}]....'.format(x))
         state = sess.run(model.state_tensor)
         for dl in utils.get_train_data(vocabulary, batch_size=FLAGS.batch_size, num_steps=FLAGS.num_steps):
